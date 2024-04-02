@@ -1,0 +1,204 @@
+@font-face {
+    font-family: MoonFont;
+    src: url(fonts/moon_get-Heavy.ttf);
+}
+@font-face {
+    font-family: BuildRg;
+    src: url(fonts/built_titling_rg.otf);
+}
+@font-face {
+    font-family: BuildLt;
+    src: url(fonts/built_titling_lt.otf);
+}
+@font-face {
+    font-family: BuildRgit;
+    src: url(fonts/built_titling_rg_it.otf);
+}
+@font-face {
+    font-family: Coolvetica;
+    src: url(fonts/coolvetica_rg.otf);
+}
+html,body {
+    font-family: Arial, sans-serif;
+    background: rgb(63,0,113);
+    background: linear-gradient(90deg, rgba(63,0,113,1) 0%, rgba(11,11,87,1) 100%);
+    background-repeat: repeat;
+    height: 100%;
+
+    /*Scroll Box Removing
+    overflow: hidden; 
+    overflow-x: hidden; */
+}
+h1{
+    color:white;
+    font-size: 38px;
+    font-family: MoonFont;
+    text-align: center;
+}
+.LogoImage{
+    position:absolute;
+    height: 150px;
+    width: 150px;
+}
+#container {
+    text-align: center;
+    padding-top: 60px;
+}
+@media screen and (max-width: 750px) {
+    #container {
+        padding-top: 120px; /* Le double de 60px */
+    }
+}
+#image {
+    max-width: 90%;
+    max-height: 90%;
+    border: 3px solid white;
+    border-radius: 10px;
+    margin: auto;
+}
+.parametersdiv{
+    margin: 20px;
+    position: relative;
+}
+.normaltext{
+    font-size: 20px;
+    font-family: BuildRg;
+    text-align: center;
+    color: white;
+}
+
+.sizeinput{
+    font-size: 20px;
+    font-family: BuildRg;
+    text-align: center;
+    color: black;
+
+}
+.selectbutton{
+    /* Remove Default Input Style*/
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    background-color: transparent;
+    border: 2px solid white;
+    margin: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 185px;
+    margin: auto;
+    margin-top: 15px;
+}
+.selectbutton input[type="file"]{
+    text-align: center;
+}
+.selectbutton:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+}
+
+.selectbutton:hover:before {
+    width: 0;
+    height: 0;
+    top: 50%;
+    left: 50%;
+}
+
+.selectbutton:hover {
+    background-color: white;
+    color: #0b0b57;
+    transform: scale(1.1);
+}
+
+/* Clic anim */
+.selectbutton:active {
+    transform: scale(0.9);
+}
+
+/* Text Anim */
+.selectbutton span {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.selectbutton:hover span {
+    transform: translateY(-4px);
+}
+
+/* Remove default style */
+.selectbutton::-webkit-file-upload-button {
+    display: none;
+}
+
+/* Styles pour le range input */
+.ranger {
+    -webkit-appearance: none;
+    width: 150px;
+    height: 15px;
+    background: transparent;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border: 2px solid white;
+
+}
+
+/* Style pour la barre de défilement */
+.ranger::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: rgb(255, 255, 255);
+    cursor: pointer;
+}
+
+/* Style pour le curseur au survol */
+.ranger:hover {
+    opacity: 1;
+}
+
+/* Style pour la barre de progression remplie */
+.ranger::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    background: transparent;
+}
+
+/* Style pour la barre de progression vide */
+.ranger::-moz-range-track {
+    width: 100%;
+    height: 15px;
+    cursor: pointer;
+    background: transparent;
+}
+
+/*Copyright Notice Style*/
+.copyrightstyle{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    z-index: 999;
+}

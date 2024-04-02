@@ -1,0 +1,166 @@
+<!--
+Copyright © 2024 ZBIRI Nael. All rights reserved.
+
+For permissions or inquiries, please contact:
+
+ZBIRI Nael
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Resizer</title>
+    <img class="LogoImage" src="ImageResizerLogo.png"> 
+</head>
+<body>
+    <div id="container">
+        <div class="parametersdiv">
+            <label for="fileInput" class="selectbutton"> 
+                <input style="display:none;" id="fileInput" type="file" onchange="updateInfotext()"> 
+                <span id="infotxt">Select a file</span> 
+            </label>
+            <label class="selectbutton" id="downloadBtnLabel" style="display: none;"> 
+                <button style="display: none;" id="downloadBtn">Download Resized Image</button>
+                <span>Download Resized Image</span> 
+            </label>
+            <br><br>
+            <input class="normaltext"type="checkbox" id="keepAspectRatioCheckbox" checked>
+            <label class="normaltext" for="keepAspectRatioCheckbox">Keep Aspect Ratio</label>
+            <br><br>
+            <div id="resizeOptions">
+                <label class="normaltext" for="scaleRange">Scale:</label>
+                <input class="ranger" type="range" min="10" max="200" value="100" id="scaleRange">
+                <span class="normaltext"id="scalePercentage">100%</span>
+                <br><br>
+            </div>
+            <div id="dimensionsOptions" style="display: none;">
+                <label class="normaltext" for="widthInput">Width:</label>
+                <input class="sizeinput" type="number" id="widthInput" min="1" max="5000" step="1">
+                <label class="normaltext" for="heightInput">Height:</label>
+                <input class="sizeinput" type="number" id="heightInput" min="1" max="5000" step="1">
+                <br><br>
+            </div>
+            <span class="normaltext" id="imageSize"></span>
+            <br><br>
+        </div>
+            <img id="image" style="display: none;" src="" alt="Preview">
+            <br><br>
+
+    </div>
+    <div class="copyrightstyle">
+        <p>&copy; 2024 ZBIRI Nael. All Rights Reserved.</p> <!-- Copyright 2024 ZBIRI Nael. All Rights Reserved. -->
+    </div>
+    <script>
+        var originalWidth, originalHeight;
+
+        // This function resets the size of the image to its original dimensions and clears any displayed text.
+        function resetImageSize() {
+            var img = document.getElementById('image');
+            img.style.width = 'auto'; // Set width to auto to rset to original width.
+            img.style.height = 'auto'; // Set height to auto to reset to original height.
+            document.getElementById('scalePercentage').innerText = '100%'; // Reset scale percentage to 100%.
+            document.getElementById('imageSize').innerText = ''; // Clear displayed image size text.
+        }
+
+        // This function is called when a file is selected. It updates the image preview with the selected image.
+        function updateInfotext() {
+            var fileInput = document.getElementById('fileInput');
+            var downloadBtnLabel = document.getElementById('downloadBtnLabel');
+            var image = document.getElementById('image');
+
+            if (fileInput.files.length > 0) { // Check if files were selected
+                var file = fileInput.files[0]; // Get the first selected file
+                var reader = new FileReader(); // Create a FileReader object to read file data
+                reader.onload = function(e) { // Event handler for when file reading is complete
+                    var img = document.getElementById('image');
+                    img.src = e.target.result; // Set image source to the read data
+                    originalWidth = img.naturalWidth; // Store original width of the image.
+                    originalHeight = img.naturalHeight; // Store original wheight of the image.
+                    downloadBtnLabel.style.display = 'block'; // Show download button.
+                    image.style.display = 'block'; // Show image preview
+                };
+                reader.readAsDataURL(file); // Read the selected file as a Data URL
+            } else {
+                downloadBtnLabel.style.display = 'none'; // Hide download button if no file is selected
+                image.style.display = 'none'; // Hide image preview if no file is selected
+            }
+        }
+
+        // Event listener for when a file is selected
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            resetImageSize(); // Reset image size
+            updateInfotext(); // Update image preview
+        });
+
+        // Event listener for when the "Keep Aspect Ratio" checkbox is changed
+        document.getElementById('keepAspectRatioCheckbox').addEventListener('change', function() {
+            var resizeOptions = document.getElementById('resizeOptions');
+            var dimensionsOptions = document.getElementById('dimensionsOptions');
+            resetImageSize(); // Reset image' size
+            var img = document.getElementById('image');
+            if (this.checked) { // If checkbox is checked
+                resizeOptions.style.display = 'block'; // Show scales options
+                dimensionsOptions.style.display = 'none'; // Hide manual dimensions input.
+            } else {
+                resizeOptions.style.display = 'none'; // Hide scales options
+                dimensionsOptions.style.display = 'block'; // Show manual dimensions input
+            }
+        });
+
+        // Event listener for when the scale range input is changed
+        document.getElementById('scaleRange').addEventListener('input', function() {
+            var scaleFactor = parseInt(this.value) / 100; // Calculate scale factor based on input value
+            var img = document.getElementById('image');
+            var width = originalWidth * scaleFactor; // Calculate new width
+            var height = originalHeight * scaleFactor; // Calculate new height
+            img.style.width = width + 'px'; // Set new width
+            img.style.height = height + 'px'; // Set new height
+            document.getElementById('scalePercentage').innerText = this.value + '%'; // Update displayed scale percentage
+            document.getElementById('imageSize').innerText = 'Image Size: ' + Math.round(width) + 'x' + Math.round(height); // Update displayed image size
+        });
+
+        // Event listener for when the width input is changed
+        document.getElementById('widthInput').addEventListener('input', function() {
+            var width = parseInt(this.value); // Get new width value.
+            var img = document.getElementById('image');
+            var height = parseInt(document.getElementById('heightInput').value); // Get current height value
+            if (width <= 5000 && height <= 5000) { // Check if width and height are within acceptable range.
+                img.style.width = width + 'px'; // Set new width
+                img.style.height = height + 'px'; // Set new height
+                document.getElementById('scalePercentage').innerText = Math.round((width / originalWidth) * 100) + '%'; // Update displayed scale percentage
+                document.getElementById('imageSize').innerText = 'Image Size: ' + width + 'x' + height; // Update displayed image size.
+            }
+        });
+
+        // Same but for the height
+        document.getElementById('heightInput').addEventListener('input', function() {
+            var height = parseInt(this.value); // Get new height value
+            var img = document.getElementById('image');
+            var width = parseInt(document.getElementById('widthInput').value); // Get current width value
+            if (width <= 5000 && height <= 5000) { // Check if width and height are within acceptable range.
+                img.style.width = width + 'px'; // Set new width
+                img.style.height = height + 'px'; // Set new height
+                document.getElementById('scalePercentage').innerText = Math.round((height / originalHeight) * 100) + '%'; // Update displayed scale percentage
+                document.getElementById('imageSize').innerText = 'Image Size: ' + width + 'x' + height; // Update displayed image size.
+            }
+        });
+
+        // When the download button is clicked
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            var img = document.getElementById('image');
+            var canvas = document.createElement('canvas'); // Create a canvas element.
+            canvas.width = img.width; // Set canvas width to image width
+            canvas.height = img.height; // Set canvas height to image height.
+            var ctx = canvas.getContext('2d'); // Get 2D rendering context
+            ctx.drawImage(img, 0, 0, img.width, img.height); // Draw the image on the canvas
+            var link = document.createElement('a'); // Create a link element
+            link.download = 'resized_image.png'; // Set download attribute to specify filename
+            link.href = canvas.toDataURL('image/png'); // Set href attribute to data URL of the canvas image
+            link.click(); // Simulate click on the link to trigger download
+        });
+
+    </script>
+</body>
+</html>
